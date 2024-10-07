@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.spring.dto.product.ProductsDto;
+import com.example.spring.dto.product.UpdateProduct;
 import com.example.spring.exceptions.ProductException;
 import com.example.spring.model.documents.Product;
 import com.example.spring.repository.ProductRepository;
@@ -37,5 +38,28 @@ public class ProductServiceImplements implements ProductService {
   @Override
   public Optional<Product> findById(String id) throws ProductException {
     return productRepository.findById(id);
+  }
+
+  @Override
+  public Product updateProducts(UpdateProduct updateProduct) throws ProductException {
+    Optional<Product> product = productRepository.findById(updateProduct.id());
+    if (product.isEmpty())
+      throw new RuntimeException("User not found");
+    Product aux = product.get();
+    aux.setAmountMinProduct(updateProduct.amountMinProduct());
+    aux.setImages(updateProduct.images());
+    aux.setNameProduct(updateProduct.nameProduct());
+    aux.setPriceProduct(updateProduct.priceProduct());
+    aux.setAmountProduct(updateProduct.amountProduct());
+    aux.setId(updateProduct.id());
+    productRepository.save(aux);
+    return aux;
+
+  }
+
+  @Override
+  public String deleteProduct(String id) throws ProductException {
+    productRepository.deleteById(id);
+    return "succesfully delete product";
   }
 }

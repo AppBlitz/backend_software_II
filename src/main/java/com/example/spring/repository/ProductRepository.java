@@ -5,13 +5,25 @@ import java.util.Optional;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import com.example.spring.model.documents.Product;
 
 public interface ProductRepository extends MongoRepository<Product, String> {
 
-  Optional<Product> findById(String id);
+  @Query("{'nameProduct': :#{#nameProduct}}")
+  List<Product> findByName(@Param("nameProduct") String nameProduct);
 
-  @Query("{'nameProduct':?0}")
-  List<?> findByName(String nameProduct);
+  @Query("{'id': :#{#id}}")
+  Optional<Product> findById(@Param("id") String id);
+
+  @Query("{'id' : :#{#id}, 'nameProduct' : :#{#nameProduct}}")
+  List<Product> findByProducts(@Param("id") String id, @Param("nameProduct") String nameProduct);
+
+  @Query("{'activate': true}")
+  List<Product> findAllProduct();
+
+  @Query("{'nameSupplier': :#{#nameSupplier}}")
+  Optional<Product> searchProductSupplier(@Param("nameSupplier") String nameSupplier);
+
 }

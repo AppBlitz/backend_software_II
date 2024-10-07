@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.spring.controller.ProductController;
 import com.example.spring.dto.product.ProductsDto;
+import com.example.spring.dto.product.UpdateProduct;
 import com.example.spring.model.documents.Product;
 import com.example.spring.service.implement.ProductServiceImplements;
 
@@ -34,6 +35,19 @@ public class ProductsControllerImplement implements ProductController {
   @RequestMapping(value = "/search/{id}", method = RequestMethod.GET)
   public Optional<Product> findById(@PathVariable("id") String id) throws Exception {
     return productService.findById(id);
+  }
+
+  @Override
+  @RequestMapping(value = "/product/update", method = RequestMethod.PUT)
+  public ResponseEntity<Product> updateProduct(@RequestBody() UpdateProduct updateProduct) throws Exception {
+    Product product = productService.updateProducts(updateProduct);
+    return ResponseEntity.status(200).body(product);
+  }
+
+  @Override
+  @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
+  public ResponseEntity<String> deleteProduct(@PathVariable("id") String id) throws Exception {
+    return ResponseEntity.status(200).body(productService.deleteProduct(id));
   }
 
 }
