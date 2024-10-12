@@ -1,5 +1,6 @@
 package com.example.spring.controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.http.ResponseEntity;
@@ -19,4 +20,6 @@ public interface ProductController {
   public ResponseEntity<Product> updateProduct(@RequestBody UpdateProduct updateProductDto) throws Exception;
 
   public ResponseEntity<String> deleteProduct(@PathVariable String id) throws Exception;
+
+  public ResponseEntity<List<Product>> getAll() throws Exception;
 }

@@ -26,4 +26,6 @@ public interface ProductRepository extends MongoRepository<Product, String> {
   @Query("{'nameSupplier': :#{#nameSupplier}}")
   Optional<Product> searchProductSupplier(@Param("nameSupplier") String nameSupplier);
 
+  boolean existsByNameProduct(String nameProduct);
+
 }

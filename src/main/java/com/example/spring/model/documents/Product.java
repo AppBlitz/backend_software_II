@@ -1,19 +1,18 @@
 package com.example.spring.model.documents;
 
-import java.util.List;
-
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.example.spring.model.enums.StateProduct;
 
 import jakarta.validation.constraints.Null;
-import lombok.ToString;
 
-@lombok.Data
+@lombok.Setter
+@lombok.Getter
 @lombok.AllArgsConstructor
 @lombok.NoArgsConstructor
-@ToString
+@lombok.ToString
+@lombok.Builder
 @Document("Product")
 public class Product {
 
@@ -36,7 +35,7 @@ public class Product {
   StateProduct stateProduct;
 
   @Null
-  List<String> images;
+  String image;
 
   int amountForProduct;
 

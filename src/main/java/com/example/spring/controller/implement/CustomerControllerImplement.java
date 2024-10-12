@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.spring.controller.CustomerController;
 import com.example.spring.dto.customer.CustomerDto;
+import com.example.spring.dto.customer.LoginCustomerDto;
 import com.example.spring.dto.customer.UpdateCustomerDto;
 import com.example.spring.model.documents.Customer;
 import com.example.spring.service.implement.CustomerServiceImplement;
@@ -28,8 +29,8 @@ public class CustomerControllerImplement implements CustomerController {
 
   @Override
   @RequestMapping(value = "/customer/create", method = RequestMethod.POST)
-  public ResponseEntity<Customer> loginCustomer(@RequestBody() CustomerDto loginCustomerDto) throws Exception {
-    Customer customer = customerService.saveCustomer((loginCustomerDto));
+  public ResponseEntity<Customer> loginCustomer(@RequestBody() CustomerDto CustomerDto) throws Exception {
+    Customer customer = customerService.saveCustomer((CustomerDto));
     return ResponseEntity.ok(customer);
   }
 
@@ -56,5 +57,12 @@ public class CustomerControllerImplement implements CustomerController {
   public ResponseEntity<Customer> updateCustomer(UpdateCustomerDto updateCustomerDto) throws Exception {
     Customer customer = customerService.updateCustomer(updateCustomerDto);
     return ResponseEntity.status(200).body(customer);
+  }
+
+  @Override
+  @RequestMapping(value = "/login", method = RequestMethod.POST)
+  public ResponseEntity<Optional<Customer>> login(LoginCustomerDto loginCustomerdto) throws Exception {
+    Optional<Customer> customer = customerService.login(loginCustomerdto);
+    return ResponseEntity.ok(customer);
   }
 }

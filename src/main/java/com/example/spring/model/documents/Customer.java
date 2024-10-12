@@ -4,12 +4,13 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.NonNull;
-import lombok.ToString;
 
-@lombok.Data
+@lombok.Setter
+@lombok.Getter
 @lombok.NoArgsConstructor
 @lombok.AllArgsConstructor
-@ToString
+@lombok.ToString
+@lombok.Builder
 @Document(collection = "Customer")
 public class Customer {
 

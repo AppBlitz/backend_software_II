@@ -1,6 +1,7 @@
 
 package com.example.spring.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.example.spring.dto.product.ProductsDto;
@@ -19,5 +20,7 @@ public interface ProductService {
   public Product updateProducts(UpdateProduct updateProduct) throws ProductException;
 
   public String deleteProduct(String id) throws ProductException;
+
+  public List<Product> findAll() throws ProductException;
 
 }

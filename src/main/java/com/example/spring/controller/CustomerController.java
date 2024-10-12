@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.example.spring.dto.customer.CustomerDto;
+import com.example.spring.dto.customer.LoginCustomerDto;
 import com.example.spring.dto.customer.UpdateCustomerDto;
 import com.example.spring.model.documents.Customer;
 
@@ -19,4 +20,5 @@ public interface CustomerController {
 
   public ResponseEntity<Customer> updateCustomer(@RequestBody UpdateCustomerDto updateCustomer) throws Exception;
 
+  public ResponseEntity<Optional<Customer>> login(@RequestBody LoginCustomerDto loginCustomerdto) throws Exception;
 }
