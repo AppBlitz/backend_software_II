@@ -61,7 +61,9 @@ public class CustomerServiceImplement implements CustomerService {
   @Override
   public Customer updateCustomer(UpdateCustomerDto updateCustomerDto) throws CustomerException {
     Optional<Customer> customer = customerRepository
-        .findByNumberIdentification(updateCustomerDto.numberIdentification());
+        .findById(updateCustomerDto.idCustomer());
+    if (customer.isEmpty())
+      throw new CustomerException("Customer not");
     Customer auxCustomer = customer.get();
     auxCustomer.setNameCustomer(updateCustomerDto.nameCustomer());
     auxCustomer.setNumberIdentification(updateCustomerDto.numberIdentification());
