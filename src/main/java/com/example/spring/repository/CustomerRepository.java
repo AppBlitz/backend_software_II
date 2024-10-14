@@ -11,4 +11,8 @@ public interface CustomerRepository extends MongoRepository<Customer, String> {
 
   Optional<Customer> findByNumberIdentification(String identificationNumber);
 
+  boolean existsByNumberIdentification(String numberIdentification);
+
+  Optional<Customer> findByEmailAndPassword(String email, String password);
+
 }

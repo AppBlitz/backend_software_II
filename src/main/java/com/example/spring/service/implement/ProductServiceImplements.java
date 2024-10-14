@@ -1,5 +1,6 @@
 package com.example.spring.service.implement;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,18 +21,22 @@ public class ProductServiceImplements implements ProductService {
 
   @Override
   public Product saveProduct(ProductsDto productDto) throws ProductException {
+    if (productRepository.existsByNameProduct(productDto.nameProduct()))
+      throw new RuntimeException("exists product");
     Product product = productRepository.save(dtoAobject(productDto));
     return product;
   }
 
   @Override
   public Product dtoAobject(ProductsDto productdto) {
-    Product product = new Product();
-    product.setAmountMinProduct(productdto.amountMinProduct());
-    product.setPriceProduct(productdto.priceProduct());
-    product.setStateProduct(productdto.stateProduct());
-    product.setAmountProduct(productdto.amountProducts());
-    product.setNameProduct(productdto.nameProduct());
+    Product product = Product.builder()
+        .nameProduct(productdto.nameProduct())
+        .nameSupplier(productdto.nameSupplier())
+        .amountMinProduct(productdto.amountMinProduct())
+        .stateProduct(productdto.stateProduct())
+        .priceProduct(productdto.priceProduct())
+        .image(productdto.image())
+        .build();
     return product;
   }
 
@@ -45,13 +50,15 @@ public class ProductServiceImplements implements ProductService {
     Optional<Product> product = productRepository.findById(updateProduct.id());
     if (product.isEmpty())
       throw new RuntimeException("User not found");
-    Product aux = product.get();
-    aux.setAmountMinProduct(updateProduct.amountMinProduct());
-    aux.setImages(updateProduct.images());
-    aux.setNameProduct(updateProduct.nameProduct());
-    aux.setPriceProduct(updateProduct.priceProduct());
-    aux.setAmountProduct(updateProduct.amountProduct());
-    aux.setId(updateProduct.id());
+    Product aux = Product.builder()
+        .amountMinProduct(updateProduct.amountMinProduct())
+        .nameProduct(updateProduct.nameProduct())
+        .priceProduct(updateProduct.priceProduct())
+        .image(updateProduct.image())
+        .amountProduct(updateProduct.amountProduct())
+        .stateProduct(updateProduct.stateProduct())
+        .nameSupplier(updateProduct.nameSupplier())
+        .build();
     productRepository.save(aux);
     return aux;
 
@@ -62,4 +69,11 @@ public class ProductServiceImplements implements ProductService {
     productRepository.deleteById(id);
     return "succesfully delete product";
   }
+
+  @Override
+  public List<Product> findAll() throws ProductException {
+    List<Product> products = productRepository.findAll();
+    return products;
+  }
+
 }

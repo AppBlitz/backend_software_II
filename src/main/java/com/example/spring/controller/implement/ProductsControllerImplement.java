@@ -1,5 +1,6 @@
 package com.example.spring.controller.implement;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +49,13 @@ public class ProductsControllerImplement implements ProductController {
   @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
   public ResponseEntity<String> deleteProduct(@PathVariable("id") String id) throws Exception {
     return ResponseEntity.status(200).body(productService.deleteProduct(id));
+  }
+
+  @Override
+  @RequestMapping(value = "/all", method = RequestMethod.GET)
+  public ResponseEntity<List<Product>> getAll() throws Exception {
+    List<Product> products = productService.findAll();
+    return ResponseEntity.ok(products);
   }
 
 }
