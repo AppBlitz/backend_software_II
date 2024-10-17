@@ -1,18 +1,20 @@
 package com.example.spring.model.documents;
 
 import org.springframework.data.annotation.Id;
+import lombok.*;
 
-@lombok.Data
-@lombok.AllArgsConstructor
-@lombok.ToString
-@lombok.NoArgsConstructor
+@Data
+@AllArgsConstructor
+@ToString
+@NoArgsConstructor
+@Builder
+
 public class Detail {
-
-  @Id
-  String id;
 
   @lombok.NonNull
   Product product;
+
+  int cant;
 
   int amount;
 
