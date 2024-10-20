@@ -8,14 +8,13 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-
-
+@Builder
 public record UpdateOrderDTO(@NonNull String id,
-                             @NonNull LocalDate fecha,
-                             Double total,
-                             @NonNull String tipo,
-                             @NonNull String direccion,
-                             @NonNull LocalDateTime hora,
-                             @NonNull StateOrder estado,
-                             @NonNull List<Detail> DetailProduct) {
+                                                          @NonNull LocalDate fecha,
+                                                          Double total,
+                                                          @NonNull String tipo,
+                                                          @NonNull String direccion,
+                                                          @NonNull LocalDateTime hora,
+                                                          @NonNull StateOrder estado,
+                                                          @NonNull List<Detail> DetailProduct) {
 }

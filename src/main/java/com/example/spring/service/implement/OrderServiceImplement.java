@@ -34,14 +34,13 @@ public class OrderServiceImplement implements OrderService {
 
     @Override
     public Order saveOrder(CreateOrderDTO order) {
-        Order o= orderDTOToOrder(order);
+        Order o = orderDTOToOrder(order);
         return orderRepository.save(o);
     }
 
-
     @Override
     public Order updateOrder(UpdateOrderDTO order) {
-        Order o= orderDTOToOrder(order);
+        Order o = orderDTOToOrder(order);
         return orderRepository.save(o);
     }
 
@@ -52,48 +51,49 @@ public class OrderServiceImplement implements OrderService {
 
     @Override
     public List<Detail> getAllDetailProducts(String id) {
-        Optional<Order> order= orderRepository.findById(id);
-        if(order.isPresent()){
-            List<Detail> details= order.get().getDetailProduct();
+        Optional<Order> order = orderRepository.findById(id);
+        if (order.isPresent()) {
+            List<Detail> details = order.get().getDetailProduct();
             return details;
-        }else{
-                throw new OrderException("pedido no encontrado");
+        } else {
+            throw new OrderException("pedido no encontrado");
         }
 
     }
 
     public Detail addDetail(DetailDTO detail, String idOrder) throws ProductException {
 
-        Detail detailProduct= Detail.builder().cant(detail.cant()).amount(detail.amount()).product(detail.product()).build();
-        Optional<Order> orderOptional= orderRepository.findById(idOrder);
+        Detail detailProduct = Detail.builder().cant(detail.cant()).amount(detail.amount()).product(detail.product())
+                .build();
+        Optional<Order> orderOptional = orderRepository.findById(idOrder);
         Order order = orderOptional.get();
         order.getDetailProduct().add(detailProduct);
         orderRepository.save(order);
         Product product = detailProduct.getProduct();
-        product.setAmountProduct(product.getAmountProduct()-detailProduct.getCant());
+        product.setAmountProduct(product.getAmountProduct() - detailProduct.getCant());
         productService.updateProducts(objectToDto(product));
 
         return detailProduct;
     }
 
     private UpdateProduct objectToDto(Product product) {
-        return new UpdateProduct(product.getId(),
+        return new UpdateProduct(
+                product.getId(),
                 product.getNameProduct(),
                 product.getStateProduct(),
                 product.getPriceProduct(),
                 product.getAmountProduct(),
                 product.getAmountMinProduct(),
-                product.getImages());
-
+                product.getImage(), product.getNameSupplier());
 
     }
 
     @Override
     public Double calcularTotal(String id) {
-        Double total= 0.0;
-        List<Detail> details= getAllDetailProducts(id);
-        for(Detail detail: details){
-            total+=detail.getAmount();
+        Double total = 0.0;
+        List<Detail> details = getAllDetailProducts(id);
+        for (Detail detail : details) {
+            total += detail.getAmount();
         }
         return total;
     }
@@ -101,17 +101,20 @@ public class OrderServiceImplement implements OrderService {
     @Override
     public Order orderDTOToOrder(CreateOrderDTO orderDto) {
         Order order = new Order();
-        return getOrder(order, orderDto.hora(), orderDto.direccion(), orderDto.fecha(), orderDto.tipo(), orderDto.estado(), orderDto.total(), orderDto.DetailProduct());
+        return getOrder(order, orderDto.hora(), orderDto.direccion(), orderDto.fecha(), orderDto.tipo(),
+                orderDto.estado(), orderDto.total(), orderDto.DetailProduct());
     }
 
     @Override
     public Order orderDTOToOrder(UpdateOrderDTO orderDto) {
         Order order = new Order();
         order.setId(orderDto.id());
-        return getOrder(order, orderDto.hora(), orderDto.direccion(), orderDto.fecha(), orderDto.tipo(), orderDto.estado(), orderDto.total(), orderDto.DetailProduct());
+        return getOrder(order, orderDto.hora(), orderDto.direccion(), orderDto.fecha(), orderDto.tipo(),
+                orderDto.estado(), orderDto.total(), orderDto.DetailProduct());
     }
 
-    private Order getOrder(Order order, LocalDateTime hora, String direccion, LocalDate fecha, String tipo, StateOrder estado, Double total, List<Detail> details) {
+    private Order getOrder(Order order, LocalDateTime hora, String direccion, LocalDate fecha, String tipo,
+            StateOrder estado, Double total, List<Detail> details) {
         order.setHora(hora);
         order.setDireccion(direccion);
         order.setFecha(fecha);
