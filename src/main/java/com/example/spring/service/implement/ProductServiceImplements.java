@@ -47,24 +47,26 @@ public class ProductServiceImplements implements ProductService {
 
   @Override
   public Product updateProducts(UpdateProduct updateProduct) throws ProductException {
-    Optional<Product> product = productRepository.findById(updateProduct.id());
-    if (product.isEmpty())
-      throw new RuntimeException("User not found");
-    Product aux = Product.builder()
-        .amountMinProduct(updateProduct.amountMinProduct())
-        .nameProduct(updateProduct.nameProduct())
-        .priceProduct(updateProduct.priceProduct())
-        .image(updateProduct.image())
-        .amountProduct(updateProduct.amountProduct())
-        .stateProduct(updateProduct.stateProduct())
-        .nameSupplier(updateProduct.nameSupplier())
-        .build();
-    productRepository.save(aux);
-    return aux;
+    Optional<Product> productOptional = productRepository.findById(updateProduct.id());
 
+    if (productOptional.isEmpty()) {
+      throw new RuntimeException("Product not found");
+    }
+
+    Product product = productOptional.get();
+    product.setAmountMinProduct(updateProduct.amountMinProduct());
+    product.setNameProduct(updateProduct.nameProduct());
+    product.setPriceProduct(updateProduct.priceProduct());
+    product.setImage(updateProduct.image());
+    product.setAmountProduct(updateProduct.amountProduct());
+    product.setStateProduct(updateProduct.stateProduct());
+    product.setNameSupplier(updateProduct.nameSupplier());
+
+    productRepository.save(product);
+
+    return product;
   }
 
-  @Override
   public String deleteProduct(String id) throws ProductException {
     productRepository.deleteById(id);
     return "succesfully delete product";
